@@ -1,4 +1,4 @@
-package Syntax
+package FSMC
 
 class FsmSyntax {
 	var headers = List[Header]()
