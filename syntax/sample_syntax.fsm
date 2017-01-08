@@ -4,14 +4,14 @@ Initial : Locked
 {
 	Locked {
 		Open	Unlocked 	unlock
-		Force	Alarming	lock
+		Force	Alarming	{lock notify}
 	}
 
-	Alarming : >alarmOn <alarmOff {
+	Alarming >alarmOn <alarmOff {
 		Reset	Locked	lock
 	}
 
-	Unlocked : Base {
+	Unlocked {
 		Close	Locked	lock
 		Reset	Locked	lock
 	}
