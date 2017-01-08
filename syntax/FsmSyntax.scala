@@ -1,3 +1,5 @@
+package Syntax
+
 class FsmSyntax {
 	var headers = List[Header]()
 	var transitions = List[Transitions]()
