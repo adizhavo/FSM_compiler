@@ -73,9 +73,3 @@ class Lexer {
 		else false
 	}
 }
-
-
-
-
-
-
