@@ -14,7 +14,7 @@ object FSMCApp {
 			lexer.Lex(lines)
 		}
 		catch {
-  			case e: Exception => println("Wrong path exception: " + e);
+  			case e: Exception => println("File not found: " + path + ", exception message: " + e);
 		}
 	}
 }
