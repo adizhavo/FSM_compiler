@@ -1,6 +1,6 @@
 package FSMC
 
-object ParserEvents extends Enumeration {
+object ParserEvent extends Enumeration {
   type ParserEvent = Value
   val NAME,
       OPEN_BRACE,
@@ -8,6 +8,7 @@ object ParserEvents extends Enumeration {
       OPEN_ANGLE,
       CLOSE_ANGLE,
       COLON,
+      DASH,
       EOF
       = Value
 }

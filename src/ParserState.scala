@@ -1,11 +1,10 @@
 package FSMC
 
-object ParserStates extends Enumeration {
+object ParserState extends Enumeration {
   type ParserState = Value
   val HEADER,
       HEADER_COLON,
       HEADER_VALUE,
-      ENTRY_TRANSITION,
       STATE_SPEC,
       STATE_MODIFIER,
       ENTRY_ACTION,
@@ -13,7 +12,7 @@ object ParserStates extends Enumeration {
       STATE_EVENT,
       NEXT_STATE,
       STATE_ACTION,
-      EXIT_TRANSITION,
+      GROUP_STATE_ACTION,
       END
       = Value
 }
