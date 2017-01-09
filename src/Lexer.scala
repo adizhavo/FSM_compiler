@@ -60,6 +60,7 @@ class Lexer (_collector : TokenCollector) {
 				case ":" => collector.Colon(lineNumber, postionInLine)
 				case "<" => collector.OpenAngle(lineNumber, postionInLine)
 				case ">" => collector.CloseAngle(lineNumber, postionInLine)
+				case "-" => collector.Dash(lineNumber, postionInLine)
 				case default => notFound = true
 			}
 			if (notFound) false

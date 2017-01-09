@@ -2,7 +2,7 @@ package FSMC
 
 class Parser extends TokenCollector {
   def OpenBrace(line : Int, pos : Int) = {
-    println("parser receives an {")
+    println("parser receives a {")
   }
 
   def CloseBrace(line : Int, pos : Int) = {
@@ -19,6 +19,10 @@ class Parser extends TokenCollector {
 
   def Colon(line : Int, pos : Int) = {
     println("parser receives a :")
+  }
+
+  def Dash(line : Int, pos : Int) = {
+    println("parser receives a -")
   }
 
   def Name(name : String, line : Int, pos : Int) = {
