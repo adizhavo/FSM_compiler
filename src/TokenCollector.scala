@@ -9,4 +9,5 @@ trait TokenCollector {
   def Dash(line : Int, pos : Int)
   def Name(name : String, line : Int, pos : Int)
   def Error(line : Int, pos : Int)
+  def EndOfFile()
 }

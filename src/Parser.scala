@@ -33,11 +33,15 @@ class Parser extends TokenCollector {
     handleEvent(NAME, line, pos);
   }
 
+  def EndOfFile() = {
+    handleEvent(EOF, -1, -1)
+  }
+
   def Error(line : Int, pos : Int) = {
     	println ("parser receives an error at: " + line + " and position: " + pos)
   }
 
-  class Transition (_currenState : ParserState, _event : ParserEvent, _nextState : ParserState){ // put function call as callback
+  class Transition (_currenState : ParserState, _event : ParserEvent, _nextState : ParserState) { // put function call as callback
     var currentState = _currenState
     var event = _event
     var nextState = _nextState
@@ -79,7 +83,7 @@ class Parser extends TokenCollector {
     handleError(_event, line, pos)
   }
 
-  private def handleError(_event : ParserEvent, line : Int, pos : Int) {
+  private def handleError(_event : ParserEvent, line : Int, pos : Int) = {
     println ("Error found for event " + _event + " at line " + line + " and position " + pos)
   }
 }

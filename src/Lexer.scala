@@ -15,6 +15,7 @@ class Lexer (_collector : TokenCollector) {
 			lexLine(line)
 			lineNumber += 1
 		}
+		collector.EndOfFile()
 	}
 
 	private def lexLine(line : String) {
