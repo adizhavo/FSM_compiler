@@ -1,7 +1,8 @@
 package FSMC
 import scala.util.matching.Regex
 
-class Lexer {
+class Lexer (_collector : TokenCollector) {
+	val collector = _collector
 	val whiteSpaceRegex = new Regex("\\s+")
 	val nameRegex = new Regex("\\w+")
 
@@ -25,7 +26,7 @@ class Lexer {
 
 	private def lexToken(line : String) = {
 		if (!findToken(line)) {
-			println ("notify token collector for error in line: " + lineNumber + " and position: " + postionInLine + " " + line.length())
+			collector.Error(lineNumber, postionInLine)
 			postionInLine += 1
 		}
 	}
@@ -54,11 +55,11 @@ class Lexer {
 			val char = line.substring(postionInLine, postionInLine + 1)
 			var notFound = false
 			char match {
-				case "{" => println("notify token collector with: " + char) 
-				case "}" => println("notify token collector with: " + char) 
-				case ":" => println("notify token collector with: " + char) 
-				case ">" => println("notify token collector with: " + char) 
-				case "<" => println("notify token collector with: " + char) 
+				case "{" => collector.OpenBrace(lineNumber, postionInLine)
+				case "}" => collector.CloseBrace(lineNumber, postionInLine)
+				case ":" => collector.Colon(lineNumber, postionInLine)
+				case "<" => collector.OpenAngle(lineNumber, postionInLine)
+				case ">" => collector.CloseAngle(lineNumber, postionInLine)
 				case default => notFound = true
 			}
 			if (notFound) false
@@ -75,7 +76,7 @@ class Lexer {
 			val found = nameRegex.findPrefixOf(line.substring(postionInLine)).size > 0
 			if (found) {
 				val name = nameRegex.findPrefixOf(line.substring(postionInLine)).get
-				println("notify token collector with: " + name + " name at line: " + lineNumber + " and position: " + postionInLine)
+				collector.Name(name, lineNumber, postionInLine)
 				postionInLine += name.length()
 				true
 			}
