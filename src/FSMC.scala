@@ -11,7 +11,8 @@ object FSMCApp {
 		try {
 			val lines = fromFile(path).getLines
 
-			val collector = new Parser()
+			val builder = new ParserSyntaxBuilder()
+			val collector = new Parser(builder)
 			val lexer = new Lexer(collector)
 			lexer.Lex(lines)
 		}
