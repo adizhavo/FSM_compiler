@@ -63,13 +63,13 @@ class Parser (_builder : SyntaxBuilder)  extends TokenCollector {
     new Transition(ENTRY_ACTION,        NAME,         STATE_MODIFIER,      builder.SetEntryAction),
     new Transition(EXIT_ACTION,         NAME,         STATE_MODIFIER,      builder.SetExitAction),
     new Transition(STATE_EVENT,         NAME,         NEXT_STATE,          builder.SetEvent),
-    new Transition(STATE_EVENT,         CLOSE_BRACE,  STATE_SPEC,          null),
+    new Transition(STATE_EVENT,         CLOSE_BRACE,  STATE_SPEC,          builder.CloseSubtransitions),
     new Transition(NEXT_STATE,          NAME,         STATE_ACTION,        builder.SetNextState),
     new Transition(STATE_ACTION,        OPEN_BRACE,   GROUP_STATE_ACTION,  null),
-    new Transition(STATE_ACTION,        NAME,         STATE_EVENT,         builder.AddAction),
+    new Transition(STATE_ACTION,        NAME,         STATE_EVENT,         builder.SetAction),
     new Transition(STATE_ACTION,        DASH,         STATE_EVENT,         builder.AddEmptyAction),
     new Transition(GROUP_STATE_ACTION,  NAME,         GROUP_STATE_ACTION,  builder.AddAction),
-    new Transition(GROUP_STATE_ACTION,  CLOSE_BRACE,  STATE_EVENT,         null),
+    new Transition(GROUP_STATE_ACTION,  CLOSE_BRACE,  STATE_EVENT,         builder.CloseTransition),
     new Transition(END,                 EOF,          END,                 null)
   )
 

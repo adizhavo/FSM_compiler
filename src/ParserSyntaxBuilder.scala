@@ -1,40 +1,71 @@
 package FSMC
 
 class ParserSyntaxBuilder extends SyntaxBuilder {
+  private var passedName : String = null
+
+  private var fsmSyntax = new FsmSyntax()
+  private var header : Header = null
+  private var stateSpec : StateSpec = null
+  private var subTransition : SubTransition = null
+  private var subTransitions = List[SubTransition]()
+
   def NewHeaderWithName() {
-    println("Syntax builder received header name")
+    header = new Header(passedName, null)
   }
 
   def NewHeaderWithValue() {
-    println("Syntax builder received header with value")
+    header.value = passedName
+    fsmSyntax.headers ::= header
   }
 
   def SetStateName() {
-    println("Syntax builder received state name")
+    stateSpec = new StateSpec(passedName, null, null)
   }
 
   def SetEntryAction() {
-    println("Syntax builder received entry action")
+    if (stateSpec.entryAction != null) {
+      println("Multiple entry action is not supported. The entry action " + passedName + " will not be added")
+      return
+    }
+    stateSpec.entryAction = passedName
   }
 
   def SetExitAction() {
-    println("Syntax builder received exit action")
+    if (stateSpec.exitAction != null) {
+      println("Multiple exit action is not supported. The exit action " + passedName + " will not be added")
+      return
+    }
+    stateSpec.exitAction = passedName
   }
 
   def SetEvent() {
-    println("Syntax builder received event")
+    subTransition = new SubTransition(passedName, null, List[String]())
   }
 
   def SetNextState() {
-    println("Syntax builder received next state")
+    subTransition.nextState = passedName
+  }
+
+  def SetAction() {
+    subTransition.actions ::= passedName
+    CloseTransition()
   }
 
   def AddAction() {
-    println("Syntax builder received action add")
+    subTransition.actions ::= passedName
   }
 
   def AddEmptyAction() {
-    println("Syntax builder received empty action")
+    subTransition.actions ::= "EMPTY_ACTION"
+  }
+
+  def CloseTransition() {
+    subTransitions ::= subTransition
+  }
+
+  def CloseSubtransitions() {
+    fsmSyntax.transitions ::= new Transitions(stateSpec, subTransitions)
+    subTransitions = List[SubTransition]()
   }
 
   def AddError(line : Int, pos : Int) {
@@ -42,10 +73,16 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def SetName(name : String) {
-    println("Syntax builder received name: " + name)
+    passedName = name
   }
 
   def Done() {
-    println("Syntax builder received done")
+    println("Syntax builder received done, it built: \n" + fsmSyntax.toString())
+    passedName = null
+    fsmSyntax = new FsmSyntax()
+    header = null
+    stateSpec = null
+    subTransition = null
+    subTransitions = List[SubTransition]()
   }
 }
