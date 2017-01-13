@@ -8,6 +8,9 @@ class FsmSyntax {
 	override def toString: String = {
 		var str : String = ""
 
+		for (_e <- syntaxErrors)
+			str += "Error message: " + _e.message + "\n"
+
 		for (_hd <- headers)
 			str += "Header name: " + _hd.name + ", value: " + _hd.value + "\n"
 
@@ -35,8 +38,6 @@ class Header (_name : String, _value : String) {
 class Transitions (_state : StateSpec, _subTransitions : List[SubTransition]) {
 	var state = _state
 	var subTransitions = _subTransitions
-
-	override def toString: String = state.toString() + subTransitions.foreach(_.toString())
 }
 
 class StateSpec (_name : String, _entryAction : String, _exitAction : String) {
