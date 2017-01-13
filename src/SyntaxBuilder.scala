@@ -13,7 +13,7 @@ trait SyntaxBuilder {
   def AddEmptyAction()
   def CloseTransition()
   def CloseSubtransitions()
-  def AddError(line : Int, pos : Int)
+  def AddError(event : String, line : Int, pos : Int)
   def SetName(name : String)
   def Done()
 }

@@ -68,8 +68,8 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
     subTransitions = List[SubTransition]()
   }
 
-  def AddError(line : Int, pos : Int) {
-    println("Syntax builder received error")
+  def AddError(event : String, line : Int, pos : Int) {
+    fsmSyntax.syntaxErrors ::= new SyntaxError("Not expecting event: " + event + " at line: " + line + " and position: " + pos)
   }
 
   def SetName(name : String) {

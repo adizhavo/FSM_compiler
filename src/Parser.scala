@@ -85,6 +85,6 @@ class Parser (_builder : SyntaxBuilder)  extends TokenCollector {
   }
 
   private def handleError(_event : ParserEvent, line : Int, pos : Int) = {
-    println ("Error found for event " + _event + " at line " + line + " and position " + pos)
+    builder.AddError(_event.toString(), line, pos)
   }
 }
