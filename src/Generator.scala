@@ -1,11 +1,13 @@
 package FSMC
 
 class Generator () {
-  def Generate(_fsmSyntax : FsmSyntax) : SwitchNode = {
-    return new SwitchNode(
-      ExtractEventCaseNode(_fsmSyntax.transitions),
-      ExtractEntryFunctionNodes(_fsmSyntax.transitions),
-      ExtractExitFunctionNodes(_fsmSyntax.transitions)
+  def Generate(_fsmSyntax : FsmSyntax, logStructure : Boolean = false) : SwitchNode = {
+    if (logStructure) println(StringGeneratedStructure(_fsmSyntax))
+    if (_fsmSyntax == null) null
+    else return new SwitchNode(
+          ExtractEventCaseNode(_fsmSyntax.transitions),
+          ExtractEntryFunctionNodes(_fsmSyntax.transitions),
+          ExtractExitFunctionNodes(_fsmSyntax.transitions)
      )
   }
 
@@ -37,4 +39,9 @@ class Generator () {
       extitFunctions ::= new ExitFunctionNode(_tr.state.name, _tr.state.exitAction)
     extitFunctions
 	}
+
+  private def StringGeneratedStructure(_fsmSyntax : FsmSyntax) : String = {
+    return ""
+  }
+
 }
