@@ -8,16 +8,23 @@ object FSMCApp {
 	}
 
 	def readAndCompileFromPath(path : String) {
-		try {
-			val lines = fromFile(path).getLines
+		var lines = Iterator[String]()
 
-			val builder = new ParserSyntaxBuilder()
-			val collector = new Parser(builder)
-			val lexer = new Lexer(collector)
-			lexer.Lex(lines)
+		try {
+			lines = fromFile(path).getLines
 		}
 		catch {
   			case e: Exception => println("File not found: " + path + ", exception message: " + e);
 		}
+
+		val builder = new ParserSyntaxBuilder()
+		builder.StartNewBuild()
+
+		val collector = new Parser(builder)
+		val lexer = new Lexer(collector)
+		lexer.Lex(lines)
+
+		val generator = new Generator()
+		generator.Generate(builder.lastBuild, true)
 	}
 }
