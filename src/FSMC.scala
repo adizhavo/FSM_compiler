@@ -18,7 +18,7 @@ object FSMCApp {
 		}
 
 		val builder = new ParserSyntaxBuilder()
-		builder.StartNewBuild()
+		builder.SetupNewBuild()
 
 		val collector = new Parser(builder)
 		val lexer = new Lexer(collector)

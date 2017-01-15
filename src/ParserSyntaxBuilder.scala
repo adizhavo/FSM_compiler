@@ -9,7 +9,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   private var subTransition : SubTransition = null
   private var subTransitions = List[SubTransition]()
 
-  def StartNewBuild() {
+  def SetupNewBuild() {
     lastBuild = new FsmSyntax()
     header = null
     stateSpec = null
