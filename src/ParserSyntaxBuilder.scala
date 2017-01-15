@@ -1,13 +1,21 @@
 package FSMC
 
 class ParserSyntaxBuilder extends SyntaxBuilder {
-  private var passedName : String = null
+  var lastBuild = new FsmSyntax()
 
-  private var fsmSyntax = new FsmSyntax()
+  private var passedName : String = null
   private var header : Header = null
   private var stateSpec : StateSpec = null
   private var subTransition : SubTransition = null
   private var subTransitions = List[SubTransition]()
+
+  def StartNewBuild() {
+    lastBuild = new FsmSyntax()
+    header = null
+    stateSpec = null
+    subTransition = null
+    subTransitions = List[SubTransition]()
+  }
 
   def NewHeaderWithName() {
     header = new Header(passedName, null)
@@ -15,7 +23,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
 
   def NewHeaderWithValue() {
     header.value = passedName
-    fsmSyntax.headers ::= header
+    lastBuild.headers ::= header
   }
 
   def SetStateName() {
@@ -65,12 +73,12 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def CloseSubtransitions() {
-    fsmSyntax.transitions ::= new Transitions(stateSpec, subTransitions)
+    lastBuild.transitions ::= new Transitions(stateSpec, subTransitions)
     subTransitions = List[SubTransition]()
   }
 
   def AddError(event : String, line : Int, pos : Int) {
-    fsmSyntax.syntaxErrors ::= new SyntaxError("Not expecting event: " + event + " at line: " + line + " and position: " + pos)
+    lastBuild.syntaxErrors ::= new SyntaxError("Not expecting event: " + event + " at line: " + line + " and position: " + pos)
   }
 
   def SetName(name : String) {
@@ -78,12 +86,6 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def Done() {
-    println("Syntax builder received done, it built: \n" + fsmSyntax.toString())
-    passedName = null
-    fsmSyntax = new FsmSyntax()
-    header = null
-    stateSpec = null
-    subTransition = null
-    subTransitions = List[SubTransition]()
+    println("File syntax built.")
   }
 }
