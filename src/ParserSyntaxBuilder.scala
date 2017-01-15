@@ -91,7 +91,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
         println(Console.RED + "Error detected: " + _err.message + Console.RESET)
 
       SetupNewBuild()
-      throw new Exception("Detected syntax errors, couldn't build the syntax data structures")
+      throw new Exception(Console.RED + "Detected syntax errors, couldn't build the syntax data structures" + Console.RESET)
     }
     else println(Console.GREEN + "File syntax built." + Console.RESET)
   }
