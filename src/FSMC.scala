@@ -25,6 +25,6 @@ object FSMCApp {
 		lexer.Lex(lines)
 
 		val generator = new Generator()
-		generator.Generate(builder.lastBuild, true)
+		generator.Generate(builder.lastBuild)
 	}
 }
