@@ -86,12 +86,13 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def Done() {
-    println(Console.GREEN + "File syntax built." + Console.RESET)
     if (lastBuild.syntaxErrors.size > 0) {
       for (_err <- lastBuild.syntaxErrors)
         println(Console.RED + "Error detected: " + _err.message + Console.RESET)
 
-      throw new Exception("Detected syntax errors, last build is corrupted")
+      SetupNewBuild()
+      throw new Exception("Detected syntax errors, couldn't build the syntax data structures")
     }
+    else println(Console.GREEN + "File syntax built." + Console.RESET)
   }
 }
