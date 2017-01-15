@@ -1,4 +1,5 @@
 package FSMC
+import Config._
 
 class ParserSyntaxBuilder extends SyntaxBuilder {
   var lastBuild = new FsmSyntax()
@@ -9,7 +10,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   private var subTransition : SubTransition = null
   private var subTransitions = List[SubTransition]()
 
-  def StartNewBuild() {
+  def SetupNewBuild() {
     lastBuild = new FsmSyntax()
     header = null
     stateSpec = null
@@ -64,8 +65,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def AddEmptyAction() {
-    // TODO: code will generate an "EMPTY_ACTION" function, deal with this later.
-    subTransition.actions ::= "EMPTY_ACTION"
+    subTransition.actions ::= EmptyAction
   }
 
   def CloseTransition() {
@@ -86,6 +86,13 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def Done() {
-    println("File syntax built.")
+    if (lastBuild.syntaxErrors.size > 0) {
+      for (_err <- lastBuild.syntaxErrors)
+        println(Console.RED + "Error detected: " + _err.message + Console.RESET)
+
+      SetupNewBuild()
+      throw new Exception(Console.RED + "Detected syntax errors, couldn't build the syntax data structures" + Console.RESET)
+    }
+    else println(Console.GREEN + "File syntax built." + Console.RESET)
   }
 }

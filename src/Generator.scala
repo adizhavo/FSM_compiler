@@ -1,14 +1,74 @@
 package FSMC
+import Config._
 
 class Generator () {
-  def Generate(_fsmSyntax : FsmSyntax, logStructure : Boolean = false) : SwitchNode = {
-    if (logStructure) println(StringGeneratedStructure(_fsmSyntax))
-    if (_fsmSyntax == null) null
-    else return new SwitchNode(
-          ExtractEventCaseNode(_fsmSyntax.transitions),
-          ExtractEntryFunctionNodes(_fsmSyntax.transitions),
-          ExtractExitFunctionNodes(_fsmSyntax.transitions)
-     )
+  def Generate(_fsmSyntax : FsmSyntax) : CodeGenerationNodes = {
+    if (_fsmSyntax == null) {
+      println(Console.RED + "Passed null syntax data structure to the generator" + Console.RESET)
+      null
+    }
+    else new CodeGenerationNodes(
+      ExtractHeaderNode(_fsmSyntax),
+      ExtractActionEnumNode(_fsmSyntax),
+      ExtractStateEnumNode(_fsmSyntax),
+      new SwitchNode(
+            ExtractEventCaseNode(_fsmSyntax.transitions),
+            ExtractEntryFunctionNodes(_fsmSyntax.transitions),
+            ExtractExitFunctionNodes(_fsmSyntax.transitions)
+       )
+    )
+  }
+
+  private def ExtractHeaderNode(_fsmSyntax : FsmSyntax) = {
+    var fsmName = ""
+    var initialState = ""
+    for (_hd <- _fsmSyntax.headers)
+      if (_hd.name == FSMHeader) fsmName = _hd.value
+      else if (_hd.name == HeaderInitialState) initialState = _hd.value
+
+    if (fsmName.length() == 0) throw new Exception("\"FSM\" key is missing")
+    else if (initialState.length() == 0) throw new Exception("\"Initial\" key is missing")
+
+    new HeaderNode(fsmName, initialState)
+  }
+
+  private def ExtractActionEnumNode(_fsmSyntax : FsmSyntax) = {
+    var actionEnumType = ""
+    for (_hd <- _fsmSyntax.headers)
+      if (_hd.name == HeaderActionType) actionEnumType = _hd.value
+
+    if (actionEnumType.length() == 0) throw new Exception("\"Actions\" key is missing")
+
+    var enumValues = List[String]()
+
+    for (_tr <- _fsmSyntax.transitions)
+      for (_sbTr <- _tr.subTransitions)
+        enumValues ::= _sbTr.event
+
+    new ActionEnumNode(actionEnumType, enumValues)
+  }
+
+  private def ExtractStateEnumNode(_fsmSyntax : FsmSyntax) = {
+    var stateEnumType = ""
+    for (_hd <- _fsmSyntax.headers)
+      if (_hd.name == FSMHeader) stateEnumType = _hd.value
+
+    if (stateEnumType.length() == 0) throw new Exception("\"FSM\" key is missing")
+
+    var enumValues = List[String]()
+    for (_hd <- _fsmSyntax.headers)
+      if (_hd.name == HeaderInitialState) enumValues ::= _hd.value
+
+      for (_tr <- _fsmSyntax.transitions) {
+        if (!enumValues.contains(_tr.state.name))
+          enumValues ::= _tr.state.name
+
+        for (_sbTr <- _tr.subTransitions)
+          if (!enumValues.contains(_sbTr.nextState))
+            enumValues ::= _sbTr.nextState
+      }
+
+    new StateEnumNode(stateEnumType, enumValues)
   }
 
   private def ExtractEventCaseNode(transitions : List[Transitions]) = {
@@ -39,9 +99,4 @@ class Generator () {
       extitFunctions ::= new ExitFunctionNode(_tr.state.name, _tr.state.exitAction)
     extitFunctions
 	}
-
-  private def StringGeneratedStructure(_fsmSyntax : FsmSyntax) : String = {
-    return ""
-  }
-
 }
