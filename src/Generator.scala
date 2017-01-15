@@ -1,4 +1,5 @@
 package FSMC
+import Config._
 
 class Generator () {
   def Generate(_fsmSyntax : FsmSyntax) : CodeGenerationNodes = {
@@ -22,8 +23,8 @@ class Generator () {
     var fsmName = ""
     var initialState = ""
     for (_hd <- _fsmSyntax.headers)
-      if (_hd.name == "FSM") fsmName = _hd.value
-      else if (_hd.name == "Initial") initialState = _hd.value
+      if (_hd.name == FSMHeader) fsmName = _hd.value
+      else if (_hd.name == HeaderInitialState) initialState = _hd.value
 
     if (fsmName.length() == 0) throw new Exception("\"FSM\" key is missing")
     else if (initialState.length() == 0) throw new Exception("\"Initial\" key is missing")
@@ -34,7 +35,7 @@ class Generator () {
   private def ExtractActionEnumNode(_fsmSyntax : FsmSyntax) = {
     var actionEnumType = ""
     for (_hd <- _fsmSyntax.headers)
-      if (_hd.name == "Actions") actionEnumType = _hd.value
+      if (_hd.name == HeaderActionType) actionEnumType = _hd.value
 
     if (actionEnumType.length() == 0) throw new Exception("\"Actions\" key is missing")
 
@@ -50,13 +51,13 @@ class Generator () {
   private def ExtractStateEnumNode(_fsmSyntax : FsmSyntax) = {
     var stateEnumType = ""
     for (_hd <- _fsmSyntax.headers)
-      if (_hd.name == "FSM") stateEnumType = _hd.value
+      if (_hd.name == FSMHeader) stateEnumType = _hd.value
 
     if (stateEnumType.length() == 0) throw new Exception("\"FSM\" key is missing")
 
     var enumValues = List[String]()
     for (_hd <- _fsmSyntax.headers)
-      if (_hd.name == "Initial") enumValues ::= _hd.value
+      if (_hd.name == HeaderInitialState) enumValues ::= _hd.value
 
       for (_tr <- _fsmSyntax.transitions) {
         if (!enumValues.contains(_tr.state.name))

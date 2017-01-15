@@ -1,4 +1,5 @@
 package FSMC
+import Config._
 
 class ParserSyntaxBuilder extends SyntaxBuilder {
   var lastBuild = new FsmSyntax()
@@ -64,8 +65,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def AddEmptyAction() {
-    // TODO: code will generate an "EMPTY_ACTION" function, deal with this later.
-    subTransition.actions ::= "EMPTY_ACTION"
+    subTransition.actions ::= EmptyAction
   }
 
   def CloseTransition() {
