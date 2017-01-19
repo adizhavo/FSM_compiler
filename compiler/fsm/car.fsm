@@ -1,0 +1,18 @@
+Actions : Key
+FSM : Car
+Initial : Locked
+{
+	Locked {
+		Open	Unlocked 	unlock
+		Force	Alarming	{lock notify}
+	}
+
+	Alarming >alarmOn <alarmOff {
+		Reset	Locked	lock
+	}
+
+	Unlocked {
+		Close	Locked	lock
+		Reset	Locked	lock
+	}
+}
