@@ -25,8 +25,8 @@ object Config {
   val HeaderInitialState = "Initial"
   val HeaderActionType = "Actions"
   val EmptyAction = "EMPTY_ACTION"
-  var JsonOutputFolder = ""
-  var GeneratedFolder = ""
+  var JsonOutputFolder = "./"
+  var GeneratedFolder = "./"
   var LangVisitor : LanguageVisitor = null
 
   val ChangeJsonOutputFolderCommand = "json"
