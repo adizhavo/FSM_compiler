@@ -7,8 +7,9 @@ import org.json4s.native.JsonMethods._
 
 object FSMCApp {
 	def main (args : Array[String]) {
-		for (path <- args)
-			readAndCompileFromPath(path, "C#")
+		val visitorId = args(0)
+		for (arg <- 1 to args.length - 1)
+			readAndCompileFromPath(args(arg), visitorId)
 	}
 
 	def readAndCompileFromPath(path : String, visitorId : String) {
