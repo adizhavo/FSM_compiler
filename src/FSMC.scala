@@ -1,5 +1,4 @@
 package FSMC
-import java.io._
 import scala.io.Source._
 
 import org.json4s._
@@ -8,11 +7,12 @@ import org.json4s.native.JsonMethods._
 
 object FSMCApp {
 	def main (args : Array[String]) {
-		for (path <- args)
-			readAndCompileFromPath(path)
+		val visitorId = args(0)
+		for (arg <- 1 to args.length - 1)
+			readAndCompileFromPath(args(arg), visitorId)
 	}
 
-	def readAndCompileFromPath(path : String) {
+	def readAndCompileFromPath(path : String, visitorId : String) {
 		var lines = Iterator[String]()
 
 		try lines = fromFile(path).getLines
@@ -33,12 +33,15 @@ object FSMCApp {
 		val generator = new Generator()
 		val syntaxNodes = generator.Generate(builder.lastBuild)
 
+		val visitor = Config.RequestVisitor(visitorId)
+		// Write file in the configured folder
+		Utils.Output(Config.GeneratedCodeFolder + "/" + syntaxNodes.header.fsm + visitor.FileExtension(),
+					 			 visitor.GenerateCode(syntaxNodes),
+					 		 	 "Generated code with visitor id:" + visitorId + " in folder: \"" + Config.GeneratedCodeFolder + "/\"")
+
 		// FileWriter writes the syntax nodes to a json
-		val syntaxJson = pretty(render(syntaxNodes.json))
-		val file = new File(Config.OutputFolder + "/" + syntaxNodes.header.fsm + ".json")
-		val bw = new BufferedWriter(new FileWriter(file))
-		bw.write(syntaxJson)
-		println("Json with the syntax nodes outputed in: \"" + Config.OutputFolder + "/\"")
-		bw.close()
+		Utils.Output(Config.JsonOutputFolder + "/" + syntaxNodes.header.fsm + ".json",
+					 			 pretty(render(syntaxNodes.json)),
+					 		 	 "Json with the syntax nodes outputed in: \"" + Config.JsonOutputFolder + "/\"")
 	}
 }

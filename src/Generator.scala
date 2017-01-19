@@ -44,7 +44,8 @@ class Generator () {
 
     for (_tr <- _fsmSyntax.transitions)
       for (_sbTr <- _tr.subTransitions)
-        enumValues ::= _sbTr.event
+        if (!enumValues.contains(_sbTr.event))
+          enumValues ::= _sbTr.event
 
     new ActionEnumNode(actionEnumType, enumValues)
   }
@@ -52,7 +53,7 @@ class Generator () {
   private def ExtractStateEnumNode(_fsmSyntax : FsmSyntax) = {
     var stateEnumType = ""
     for (_hd <- _fsmSyntax.headers)
-      if (_hd.name == FSMHeader) stateEnumType = _hd.value
+      if (_hd.name == FSMHeader) stateEnumType = _hd.value + "State"
 
     if (stateEnumType.length() == 0) throw new Exception("\""+ FSMHeader +"\" key is missing")
 
