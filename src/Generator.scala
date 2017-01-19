@@ -7,16 +7,17 @@ class Generator () {
       println(Console.RED + "Passed null syntax data structure to the generator" + Console.RESET)
       null
     }
-    else new CodeGenerationNodes(
-      ExtractHeaderNode(_fsmSyntax),
-      ExtractActionEnumNode(_fsmSyntax),
-      ExtractStateEnumNode(_fsmSyntax),
-      new SwitchNode(
-            ExtractEventCaseNode(_fsmSyntax.transitions),
-            ExtractEntryFunctionNodes(_fsmSyntax.transitions),
-            ExtractExitFunctionNodes(_fsmSyntax.transitions)
-       )
-    )
+    else {
+      println(Console.GREEN + "Generated syntax nodes" + Console.RESET)
+      new CodeGenerationNodes(
+        ExtractHeaderNode(_fsmSyntax),
+        ExtractActionEnumNode(_fsmSyntax),
+        ExtractStateEnumNode(_fsmSyntax),
+        new SwitchNode(
+              ExtractEventCaseNode(_fsmSyntax.transitions),
+              ExtractEntryFunctionNodes(_fsmSyntax.transitions),
+              ExtractExitFunctionNodes(_fsmSyntax.transitions)))
+     }
   }
 
   private def ExtractHeaderNode(_fsmSyntax : FsmSyntax) = {

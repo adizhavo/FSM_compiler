@@ -5,4 +5,5 @@ object Config {
   val HeaderInitialState = "Initial"
   val HeaderActionType = "Actions"
   val EmptyAction = "EMPTY_ACTION"
+  val OutputFolder = "output"
 }

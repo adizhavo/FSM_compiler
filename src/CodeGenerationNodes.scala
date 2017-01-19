@@ -1,4 +1,5 @@
 package FSMC
+import org.json4s.JsonDSL._
 
 class CodeGenerationNodes(_header : HeaderNode,
                           _actionEnum : ActionEnumNode,
@@ -8,6 +9,39 @@ class CodeGenerationNodes(_header : HeaderNode,
   val actionEnum = _actionEnum
   val stateEnum = _stateEnum
   val switchNode = _switchNode
+
+  val json =
+    ("syntaxStructure" ->
+      ("name" -> header.fsm) ~
+      ("initialState" -> header.initialState) ~
+
+      ("actionsEnum" ->
+        ("type" -> actionEnum.enumType) ~
+        ("values" -> actionEnum.values)) ~
+
+      ("statesEnum" ->
+        ("type" -> stateEnum.enumType) ~
+        ("values" -> stateEnum.values)) ~
+
+      ("switchCaseNode" ->
+        ("currentStateCase" ->
+          switchNode.currentStateCaseNodes.map { c =>
+          (("stateCase") ->  c.state) ~
+          ("eventCaseNode" ->
+            c.eventCaseNodes.map { e =>
+            (("event" -> e.event) ~
+             ("nextState" -> e.nextState) ~
+             ("functions" -> e.functions))})})) ~
+
+      ("entryFunctions" ->
+        switchNode.entryFunctionCaseNodes.map { e =>
+        (("state" -> e.state) ~
+         ("function" -> e.function))}) ~
+
+      ("exitFunctions" ->
+       switchNode.exitFunctionCaseNodes.map { e =>
+       (("state" -> e.state) ~
+        ("function" -> e.function))}))
 }
 
 class HeaderNode(_fsm : String,  _initialState : String) {
