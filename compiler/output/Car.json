@@ -27,7 +27,7 @@
         "eventCaseNode":[{
           "event":"Reset",
           "nextState":"Locked",
-          "functions":["lock"]
+          "functions":[]
         }]
       },{
         "stateCase":"Unlocked",

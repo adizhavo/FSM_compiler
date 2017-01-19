@@ -8,7 +8,7 @@ Initial : Locked
 	}
 
 	Alarming >alarmOn <alarmOff {
-		Reset	Locked	lock
+		Reset	Locked	-
 	}
 
 	Unlocked {

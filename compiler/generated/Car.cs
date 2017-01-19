@@ -34,7 +34,6 @@ public abstract class Car{
 	case CarState.Alarming :
 		switch(receivedEvent){
 		case Key.Reset :
-		Lock();
 		SetState(CarState.Locked);
 		break;
 		}
