@@ -65,7 +65,7 @@ class ParserSyntaxBuilder extends SyntaxBuilder {
   }
 
   def AddEmptyAction() {
-    subTransition.actions ::= EmptyAction
+    CloseTransition()
   }
 
   def CloseTransition() {
