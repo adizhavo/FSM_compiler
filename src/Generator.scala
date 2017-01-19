@@ -7,16 +7,17 @@ class Generator () {
       println(Console.RED + "Passed null syntax data structure to the generator" + Console.RESET)
       null
     }
-    else new CodeGenerationNodes(
-      ExtractHeaderNode(_fsmSyntax),
-      ExtractActionEnumNode(_fsmSyntax),
-      ExtractStateEnumNode(_fsmSyntax),
-      new SwitchNode(
-            ExtractEventCaseNode(_fsmSyntax.transitions),
-            ExtractEntryFunctionNodes(_fsmSyntax.transitions),
-            ExtractExitFunctionNodes(_fsmSyntax.transitions)
-       )
-    )
+    else {
+      println(Console.GREEN + "Generated syntax nodes" + Console.RESET)
+      new CodeGenerationNodes(
+        ExtractHeaderNode(_fsmSyntax),
+        ExtractActionEnumNode(_fsmSyntax),
+        ExtractStateEnumNode(_fsmSyntax),
+        new SwitchNode(
+              ExtractEventCaseNode(_fsmSyntax.transitions),
+              ExtractEntryFunctionNodes(_fsmSyntax.transitions),
+              ExtractExitFunctionNodes(_fsmSyntax.transitions)))
+     }
   }
 
   private def ExtractHeaderNode(_fsmSyntax : FsmSyntax) = {
@@ -26,8 +27,8 @@ class Generator () {
       if (_hd.name == FSMHeader) fsmName = _hd.value
       else if (_hd.name == HeaderInitialState) initialState = _hd.value
 
-    if (fsmName.length() == 0) throw new Exception("\"FSM\" key is missing")
-    else if (initialState.length() == 0) throw new Exception("\"Initial\" key is missing")
+    if (fsmName.length() == 0) throw new Exception("\""+ FSMHeader +"\" key is missing")
+    else if (initialState.length() == 0) throw new Exception("\""+ HeaderInitialState +"\" key is missing")
 
     new HeaderNode(fsmName, initialState)
   }
@@ -37,7 +38,7 @@ class Generator () {
     for (_hd <- _fsmSyntax.headers)
       if (_hd.name == HeaderActionType) actionEnumType = _hd.value
 
-    if (actionEnumType.length() == 0) throw new Exception("\"Actions\" key is missing")
+    if (actionEnumType.length() == 0) throw new Exception("\""+ HeaderActionType +"\" key is missing")
 
     var enumValues = List[String]()
 
@@ -53,7 +54,7 @@ class Generator () {
     for (_hd <- _fsmSyntax.headers)
       if (_hd.name == FSMHeader) stateEnumType = _hd.value
 
-    if (stateEnumType.length() == 0) throw new Exception("\"FSM\" key is missing")
+    if (stateEnumType.length() == 0) throw new Exception("\""+ FSMHeader +"\" key is missing")
 
     var enumValues = List[String]()
     for (_hd <- _fsmSyntax.headers)
