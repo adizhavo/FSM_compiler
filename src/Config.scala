@@ -13,19 +13,23 @@ object Config {
         return sv._2
 
     if (throwErrorMessages) {
-      println(Console.RED + visitorCode + " visitor specified is not supported.")
-      println(Console.CYAN + "Supported visitors are:")
-      for (sv <- SupportedVisistors) println(sv._1)
-      println(Console.RESET)
+      println(Console.RED + visitorCode + " visitor specified is not supported." + Console.RESET)
+      PrintSupportedVisitors()
     }
     return null
 	}
+
+  def PrintSupportedVisitors() {
+    println(Console.CYAN + "Supported visitors are:")
+    for (sv <- SupportedVisistors) println(sv._1)
+    println(Console.RESET)
+  }
 
   val FSMHeader = "FSM"
   val HeaderInitialState = "Initial"
   val HeaderActionType = "Actions"
   val EmptyAction = "EMPTY_ACTION"
-  var JsonOutputFolder = "./"
+  var JsonOutputFolder = ""
   var GeneratedFolder = "./"
   var LangVisitor : LanguageVisitor = null
 

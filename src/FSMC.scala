@@ -8,6 +8,7 @@ import org.json4s.native.JsonMethods._
 object FSMCApp {
 	def main (args : Array[String]) {
 		val paths = Utils.SearchForVisitorsId( Utils.SearchForPathsAsArg(args) )
+		if(Config.LangVisitor == null) Config.PrintSupportedVisitors()
 		for (path <- paths)
 			readAndCompileFromPath(path, Config.LangVisitor)
 	}
