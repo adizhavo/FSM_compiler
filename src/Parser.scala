@@ -2,6 +2,9 @@ package FSMC
 import ParserEvent._
 import ParserState._
 
+// Will convert the stream of tokens into commands for the builder to build the
+// internal data structure of the language
+// The parser is a finite state machine itself
 class Parser (_builder : SyntaxBuilder)  extends TokenCollector {
   var parserState = HEADER
   var builder = _builder

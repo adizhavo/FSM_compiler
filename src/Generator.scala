@@ -1,6 +1,8 @@
 package FSMC
 import Config._
 
+// Converts the internal data structure into nodes that can be converted into a json or
+// read by any visitor to generate the actual code
 class Generator () {
   def Generate(_fsmSyntax : FsmSyntax) : CodeGenerationNodes = {
     if (_fsmSyntax == null) {
@@ -13,7 +15,7 @@ class Generator () {
         ExtractHeaderNode(_fsmSyntax),
         ExtractActionEnumNode(_fsmSyntax),
         ExtractStateEnumNode(_fsmSyntax),
-        new SwitchNode(
+        new FSMNode(
               ExtractEventCaseNode(_fsmSyntax.transitions),
               ExtractEntryFunctionNodes(_fsmSyntax.transitions),
               ExtractExitFunctionNodes(_fsmSyntax.transitions)))

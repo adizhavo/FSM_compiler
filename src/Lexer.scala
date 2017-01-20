@@ -1,6 +1,7 @@
 package FSMC
 import scala.util.matching.Regex
 
+// Lexer will transform the stream of data into a stream of tokens based on the syntax
 class Lexer (_collector : TokenCollector) {
 	val collector = _collector
 	val whiteSpaceRegex = new Regex("\\s+")

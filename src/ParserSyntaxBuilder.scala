@@ -1,6 +1,8 @@
 package FSMC
 import Config._
 
+// The syntax builder will get commands from the parser and build the
+// internal data structure of the language to pass to the generator
 class ParserSyntaxBuilder extends SyntaxBuilder {
   var lastBuild = new FsmSyntax()
 
