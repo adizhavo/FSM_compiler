@@ -13,7 +13,7 @@ class Generator () {
         ExtractHeaderNode(_fsmSyntax),
         ExtractActionEnumNode(_fsmSyntax),
         ExtractStateEnumNode(_fsmSyntax),
-        new SwitchNode(
+        new FSMNode(
               ExtractEventCaseNode(_fsmSyntax.transitions),
               ExtractEntryFunctionNodes(_fsmSyntax.transitions),
               ExtractExitFunctionNodes(_fsmSyntax.transitions)))

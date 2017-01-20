@@ -4,7 +4,7 @@ import org.json4s.JsonDSL._
 class CodeGenerationNodes(_header : HeaderNode,
                           _actionEnum : ActionEnumNode,
                           _stateEnum : StateEnumNode,
-                          _switchNode : SwitchNode) {
+                          _switchNode : FSMNode) {
   val header = _header
   val actionEnum = _actionEnum
   val stateEnum = _stateEnum
@@ -59,7 +59,7 @@ class StateEnumNode (_enumType : String,  _values : List[String]) {
   val values = _values
 }
 
-class SwitchNode (_currentStateCaseNodes : List[CurretStateCaseNode],
+class FSMNode (_currentStateCaseNodes : List[CurretStateCaseNode],
                   _entryFunctionCaseNodes : List[EntryFunctionNode],
                   _exitFunctionCaseNodes : List[ExitFunctionNode]) {
 
