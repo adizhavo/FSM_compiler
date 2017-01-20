@@ -6,6 +6,8 @@ class CSharpVisitor extends LanguageVisitor {
 
   val OpenBrace = "{"
   val CloseBrace = "}"
+  val Newline = "\n"
+  val Tab = "\t"
   val CurrentState = "currentState"
   val ReceivedEvent = "receivedEvent"
   val ExecuteEntryFunction = "ExecuteEntryFunction"
@@ -35,96 +37,95 @@ class CSharpVisitor extends LanguageVisitor {
   }
 
   private def BuildActionEnum(codeNode : CodeGenerationNodes) {
-    file += "\tpublic enum " + codeNode.actionEnum.enumType + " " + OpenBrace + "\n"
+    file += Tab + "public enum " + codeNode.actionEnum.enumType + " " + OpenBrace + Newline
     for (senum <- codeNode.actionEnum.values)
-      file += "\t" + senum + ",\n"
-    file += "\t" + CloseBrace + "\n"
+      file += Tab + senum + "," + Newline
+    file += Tab + CloseBrace + Newline
   }
 
   private def BuildClassDefinition(codeNode : CodeGenerationNodes) {
-    file += "public abstract class " + codeNode.header.fsm + OpenBrace + "\n\t"
+    file += "public abstract class " + codeNode.header.fsm + OpenBrace + Newline
   }
 
   private def AddCurrentState(codeNode : CodeGenerationNodes) {
-    file += "public " + codeNode.stateEnum.enumType + " " + CurrentState + " = " + codeNode.stateEnum.enumType + "." + codeNode.header.initialState + ";\n\t"
-
-    file += "private void SetState(" + codeNode.stateEnum.enumType + " newState)" + OpenBrace + "\n\t"
-    file += ExecuteExitFunction + "(" + CurrentState + ");\n\t"
-    file += CurrentState + " = newState;\n\t"
-    file += ExecuteEntryFunction + "(newState);\n\t"
-    file += CloseBrace + "\n\t"
+    file += Tab + "public " + codeNode.stateEnum.enumType + " " + CurrentState + " = " + codeNode.stateEnum.enumType + "." + codeNode.header.initialState + ";" + Newline
+    file += Tab + "private void SetState(" + codeNode.stateEnum.enumType + " newState)" + OpenBrace + Newline
+    file += Tab + ExecuteExitFunction + "(" + CurrentState + ");" + Newline
+    file += Tab + CurrentState + " = newState;" + Newline
+    file += Tab + ExecuteEntryFunction + "(newState);" + Newline
+    file += Tab + CloseBrace + Newline
   }
 
   private def AddStateEnum(codeNode : CodeGenerationNodes) {
-    file += "public enum " + codeNode.stateEnum.enumType + OpenBrace + "\n"
+    file += Tab + "public enum " + codeNode.stateEnum.enumType + OpenBrace + Newline
     for (senum <- codeNode.stateEnum.values)
-      file += "\t" + senum + ",\n"
-    file += "\t" + CloseBrace + "\n"
+      file += Tab + senum + "," + Newline
+    file += Tab + CloseBrace + Newline
   }
 
   private def BuildSwitchCaseStatement(codeNode : CodeGenerationNodes) {
-    file += "\tpublic void SendEvent(" + codeNode.actionEnum.enumType + " " + ReceivedEvent + ")" + OpenBrace + "\n\t"
+    file += Tab + "public void SendEvent(" + codeNode.actionEnum.enumType + " " + ReceivedEvent + ")" + OpenBrace + Newline
 
     // Check the current state first
-    file += "switch(" + CurrentState + ")" + OpenBrace + "\n\t"
+    file += Tab + "switch(" + CurrentState + ")" + OpenBrace + Newline
     for (_sn <- codeNode.switchNode.currentStateCaseNodes) {
-      file += "case " + codeNode.stateEnum.enumType + "." + _sn.state + " :\n\t"
+      file += Tab + "case " + codeNode.stateEnum.enumType + "." + _sn.state + " :" + Newline
 
       // check the received event
-      file += "\tswitch(" + ReceivedEvent + ")" + OpenBrace + "\n"
+      file += Tab + Tab + "switch(" + ReceivedEvent + ")" + OpenBrace + Newline
       for (_evnds <- _sn.eventCaseNodes) {
-        file += "\t\tcase " + codeNode.actionEnum.enumType + "." + _evnds.event + " :\n"
+        file += Tab + Tab + "case " + codeNode.actionEnum.enumType + "." + _evnds.event + " :" + Newline
 
         // build functions
         for (_f <- _evnds.functions) {
-          if (_f != null) file += "\t\t" + _f.capitalize + "();\n"
+          if (_f != null) file += Tab + Tab + _f.capitalize + "();" + Newline
           if (!functions.contains(_f))
             functions ::= _f
         }
 
         // change state
-        file += "\t\tSetState(" + codeNode.stateEnum.enumType + "." + _evnds.nextState + ");\n"
-        file += "\t\tbreak;\n"
+        file += Tab + Tab + "SetState(" + codeNode.stateEnum.enumType + "." + _evnds.nextState + ");" + Newline
+        file += Tab + Tab + "break;" + Newline
       }
-      file += "\t\t" + CloseBrace + "\n"
-      file += "\tbreak;\n\t"
+      file += Tab + Tab + CloseBrace + Newline
+      file += Tab + "break;" + Newline
     }
 
-    file += CloseBrace + "\n\t"
+    file += Tab + CloseBrace + Newline
 
-    file += CloseBrace + "\n"
+    file += Tab + CloseBrace + Newline
   }
 
   private def BuildEntryFunctionCaseStatement(codeNode : CodeGenerationNodes) {
-    file += "\tprivate void " + ExecuteEntryFunction + "(" + codeNode.stateEnum.enumType + " " + state + ")" + OpenBrace + "\n"
-    file += "\t\tswitch(" + state + ")" + OpenBrace + "\n"
+    file += Tab + "private void " + ExecuteEntryFunction + "(" + codeNode.stateEnum.enumType + " " + state + ")" + OpenBrace + Newline
+    file += Tab + Tab + "switch(" + state + ")" + OpenBrace + "\n"
     for (_entryN <- codeNode.switchNode.entryFunctionCaseNodes) {
       if (_entryN.function != null) {
-        file += "\t\tcase " + codeNode.stateEnum.enumType + "." + _entryN.state + ": " + _entryN.function.capitalize + "(); break;\n"
+        file += Tab + Tab + "case " + codeNode.stateEnum.enumType + "." + _entryN.state + ": " + _entryN.function.capitalize + "(); break;" + Newline
         functions ::= _entryN.function
       }
     }
-    file += "\t\t" + CloseBrace + "\n\t" + CloseBrace + "\n"
+    file += Tab + Tab + CloseBrace + Newline + Tab + CloseBrace + Newline
   }
 
   private def BuildExitFunctionCaseStatement(codeNode : CodeGenerationNodes) {
-    file += "\tprivate void " + ExecuteExitFunction + "(" + codeNode.stateEnum.enumType + " " + state + ")" + OpenBrace + "\n"
-    file += "\t\tswitch(" + state + ")" + OpenBrace + "\n"
+    file += Tab + "private void " + ExecuteExitFunction + "(" + codeNode.stateEnum.enumType + " " + state + ")" + OpenBrace + Newline
+    file += Tab + Tab + "switch(" + state + ")" + OpenBrace + Newline
     for (_exitN <- codeNode.switchNode.exitFunctionCaseNodes) {
       if (_exitN.function != null) {
-        file += "\t\tcase " + codeNode.stateEnum.enumType + "." + _exitN.state + ": " + _exitN.function.capitalize + "(); break;\n"
+        file += Tab + Tab + "case " + codeNode.stateEnum.enumType + "." + _exitN.state + ": " + _exitN.function.capitalize + "(); break;" + Newline
         functions ::= _exitN.function
       }
     }
-    file += "\t\t" + CloseBrace + "\n\t" + CloseBrace + "\n"
+    file += Tab + Tab + CloseBrace + Newline + Tab + CloseBrace + Newline
   }
 
   private def BuildFunctions() {
     for (f <- functions)
-      file += "\tprotected abstract void " + f.capitalize + "();\n"
+      file += Tab + "protected abstract void " + f.capitalize + "();" + Newline
   }
 
   private def EndFile() {
-    file += CloseBrace + "\n"
+    file += CloseBrace + Newline
   }
 }
