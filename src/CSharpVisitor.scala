@@ -1,5 +1,6 @@
 package FSMC
 
+// Converts the data structure nodes into real code
 class CSharpVisitor extends LanguageVisitor {
   var file : String = ""
   var functions = List[String]()
