@@ -60,3 +60,17 @@ Locked >entryFunction <exitFunction {
 - ```{ action	nextState - }``` no function will be called
 - ```{ action	nextState function}```
 - ```{ action	nextState {function1 function2} }```
+
+## Internal Structure
+
+![FSMC Structure](https://github.com/adizhavo/FSM_compiler/blob/master/FSMC%20structure.png)
+
+- __Lexer__ converts the stream of data into a stream of tokens used by the _Parser_ as events
+- __Parser__ is a finite state machine that transfers a sequence of events to the builder
+- __Syntax Builder__ creates the language data structure
+- __Generator__ converts the syntax data structure into a syntax node which is easier to parse from different visitors
+- __Language Visitors__ generate the finite state machine in different programming languages
+
+### How to support other languages
+
+Implement the _Language Visitor_ interface just like the [CSharpVisistor.scala](https://github.com/adizhavo/FSM_compiler/blob/master/src/CSharpVisitor.scala) update the visitors map in the [Config.scala](https://github.com/adizhavo/FSM_compiler/blob/master/src/Config.scala) file
