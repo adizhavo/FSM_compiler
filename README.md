@@ -2,7 +2,7 @@
 
 The idea comes from the fsm compiler of [Uncle Bob](https://github.com/unclebob/CC_SMC) a bit simplified with a different implementation
 
-FSMC is a scala application that generates a finite state machine from a file with a specific syntax and outputs a finite state machine as a nested switch case statement in C#
+FSMC is a scala application that generates a finite state machine from a file with a specific syntax and outputs it as a nested switch case statement in C#
 
 ### Usage
 
