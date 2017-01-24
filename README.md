@@ -1,7 +1,5 @@
 # FSM Compiler
 
-The idea comes from the fsm compiler of [Uncle Bob](https://github.com/unclebob/CC_SMC) a bit simplified with a different implementation
-
 FSMC is a scala application that generates a finite state machine from a file with a specific syntax and outputs it as a nested switch case statement in C#
 
 ### Usage
@@ -74,3 +72,7 @@ Locked >entryFunction <exitFunction {
 ### How to support other languages
 
 Implement the _Language Visitor_ interface just like the [CSharpVisistor.scala](https://github.com/adizhavo/FSM_compiler/blob/master/src/CSharpVisitor.scala) update the visitors map in the [Config.scala](https://github.com/adizhavo/FSM_compiler/blob/master/src/Config.scala) file
+
+### Reference
+
+The idea comes from the fsm compiler of [Uncle Bob](https://github.com/unclebob/CC_SMC) with a different implementation
