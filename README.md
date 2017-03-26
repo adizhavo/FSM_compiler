@@ -2,6 +2,9 @@
 
 FSMC is a scala application that generates a finite state machine from a file with a specific syntax and outputs it as a nested switch case statement in C#
 
+### Requirements
+[json4s](https://github.com/json4s/json4s) was used to build the json of the syntax data structure
+
 ### Usage
 
 The repository has a [compiler](https://github.com/adizhavo/FSM_compiler/tree/master/compiler) folder with ```fsmcompiler.jar``` and a sample ```car.fsm``` file showing the syntax of fsmc.
