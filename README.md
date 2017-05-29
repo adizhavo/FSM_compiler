@@ -23,12 +23,12 @@ FSM : Car
 Initial : Locked
 {
 	Locked {
-		Open	Unlocked 	unlock
-		Force	Alarming	{lock notify}
+		Open	Unlocked   unlock
+		Force	Alarming   {lock notify}
 	}
 
 	Alarming >alarmOn <alarmOff {
-		Reset	Locked	-
+		Reset	Locked	 -
 	}
 
 	Unlocked {
@@ -47,13 +47,13 @@ Initial : Locked
 #### Transition
 ```
 Locked >entryFunction <exitFunction {
-		Open	Unlocked 	unlock
-		Force	Alarming	{lock notify}
-	}
+	Open	Unlocked    unlock
+	Force	Alarming    {lock notify}
+}
 ```
 
 - ```Locked``` is the state of the fsm to execute all the subtransitions
-- ```>entryFunction``` is the function that will be executed when transitioning out of the state, this is optional
+- ```>entryFunction``` is the function that will be executed when transitioning in the state, this is optional
 - ```<exitFunction``` is the function that will be executed when transitioning out of the state, this is optional
 
 #### Subtransitions
